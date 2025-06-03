@@ -41,25 +41,25 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  const person = this;
-  console.log("Pre-save hook triggered for:", this.name);
+  const user = this;
+  //console.log("Pre-save hook triggered for:", this.name);
   //we need to hash the password only if it is modified (or is New)
-  if (!person.isModified("password")) return next();
+  if (!user.isModified("password")) return next();
 
-  console.log("Is password modified?", person.isModified("password"));
-  console.log("Current password before hashing:", person.password); // Debug log
+  console.log("Is password modified?", user.isModified("password"));
+  console.log("Current password before hashing:", user.password); // Debug log
 
   try {
     //hash password generation
     const salt = await bcrypt.genSalt(10);
     //hash password
-    const hashPassword = await bcrypt.hash(person.password, salt);
+    const hashPassword = await bcrypt.hash(user.password, salt);
     //overrided the normal password with the hash password
 
     console.log("Generated Salt:", salt); // Debug log
     //console.log("Hashed Password:", hashPassword); // Debug log
-    person.password = hashPassword;
-    console.log("Hashed Password:", person.password);
+    user.password = hashPassword;
+    console.log("Hashed Password:", user.password);
 
     next();
   } catch (err) {

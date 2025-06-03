@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
     /// same code as below for response, const newPerson = new Person(data); // Create a new instance
     // await newPerson.save(); // Save the instance
     // Validate Aadhar Card Number must have exactly 12 digit
-    if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+    if (!/^\d{12}$/.test(data.aadhaarCardNumber)) {
       return res
         .status(400)
         .json({ error: "Aadhar Card Number must be exactly 12 digits" });
@@ -29,14 +29,12 @@ router.post("/signup", async (req, res) => {
 
     // Check if a user with the same Aadhar Card Number already exists
     const existingUser = await User.findOne({
-      aadharCardNumber: data.aadharCardNumber,
+      aadhaarCardNumber: data.aadhaarCardNumber,
     });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({
-          error: "User with the same Aadhar Card Number already exists",
-        });
+      return res.status(400).json({
+        error: "User with the same Aadhar Card Number already exists",
+      });
     }
     const response = await User(req.body).save(); // This triggers the pre-save hook
 
@@ -90,9 +88,9 @@ router.post("/login", async (req, res) => {
 router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   try {
     const userData = req.user;
-    console.log("User Data:", userData);
+    //console.log("User Data:", userData);
     const userId = userData.id;
-    const user = await Person.findById(userId);
+    const user = await User.findById(userId);
     return res.status(200).json({ user });
   } catch (err) {
     console.error(err);

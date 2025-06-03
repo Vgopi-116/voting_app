@@ -4,14 +4,18 @@ const db = require("./db");
 require("dotenv").config();
 //require("dotenv").config();
 
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 
-app.use(bodyParser.json()); //req.body
+//app.use(bodyParser.json()); //req.body
+
+app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
 //const { jwtAuthMiddleware } = require("./jwt");
-
+app.get("/", function (req, res) {
+  res.send("Hello BOB Welcome to the Voting System API");
+});
 const userRoutes = require("./routes/userRoutes");
 const candidateRoutes = require("./routes/candidateRoutes");
 
